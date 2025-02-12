@@ -1,0 +1,123 @@
+ Index.html
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Google Login</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+</head>
+
+<body>
+
+
+
+    <div class="login-container">
+
+        <h2>Login with Google</h2>
+
+        <div id="g_id_onload"
+
+             data-client_id="YOUR_GOOGLE_CLIENT_ID"
+
+             data-context="signin"
+
+             data-ux_mode="popup"
+
+             data-callback="handleCredentialResponse"
+
+             data-auto_prompt="false">
+
+        </div>
+
+
+
+        <div class="g_id_signin" data-type="standard"></div>
+
+
+
+        <div id="user-info" class="hidden">
+
+            <img id="user-image" src="" alt="User Image">
+
+            <p id="user-name"></p>
+
+            <button onclick="signOut()">Sign Out</button>
+
+        </div>
+
+    </div>
+
+
+
+    <script src="script.js"></script>
+
+
+
+</body>
+
+</html>
+
+
+Style.css
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#g_id_signin {
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+#user-info img {
+    width: 50px;
+    border-radius: 50%;
+    margin-top: 10px;
+}
+
+
+Script.js 
+
+function handleCredentialResponse(response) {
+    const data = jwt_decode(response.credential);
+    
+    document.getElementById("user-info").classList.remove("hidden");
+    document.getElementById("user-name").innerText = `Welcome, ${data.name}`;
+    document.getElementById("user-image").src = data.picture;
+}
+
+function signOut() {
+    google.accounts.id.disableAutoSelect();
+    document.getElementById("user-info").classList.add("hidden");
+}
